@@ -7,7 +7,14 @@
       <div class="text-base mt-10">
         <input formControlName="api"
                class="appearance-none block w-full bg-gray-900 rounded py-3 px-4 mb-3 focus:outline-none placeholder-gray-700"
-               id="grid-first-name" type="text" placeholder="https://my-server.tld:8080">
+               id="grid-first-name" type="text" placeholder="https://my-server.tld:8080"
+               #apiInput>
+        <div class="text-yellow-500 font-normal"
+             *ngIf="connectForm.invalid && (connectForm.dirty || connectForm.touched)">
+          <div *ngIf="connectForm.controls.api.errors?.pattern">
+            Must be a valid <u>https</u> url
+          </div>
+        </div>
       </div>
     </div>
     <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 lg:pl-20">
