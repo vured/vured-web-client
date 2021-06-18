@@ -2,11 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-auth-connect',
+  templateUrl: './connect.component.html',
+  styleUrls: ['./connect.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class ConnectComponent implements OnInit {
   public connectForm = this.formBuilder.group({
     api: ['', [
       Validators.required,
