@@ -1,4 +1,4 @@
-<div class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5">
+<div class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5 select-none">
   <form [formGroup]="connectForm" (ngSubmit)="connect()"
         class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
     <div class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -9,10 +9,13 @@
                class="appearance-none block w-full bg-gray-900 rounded py-3 px-4 mb-3 focus:outline-none placeholder-gray-700"
                id="grid-first-name" type="text" placeholder="https://my-server.tld:8080"
                #apiInput>
-        <div class="text-yellow-500 font-normal"
+        <div class="text-yellow-500 font-bold"
              *ngIf="connectForm.invalid && (connectForm.dirty || connectForm.touched)">
           <div *ngIf="connectForm.controls.api.errors?.pattern">
-            Must be a valid <u>https</u> url
+            Must be a valid <u>https</u> url.
+          </div>
+          <div *ngIf="connectForm.controls.api.errors?.notExist">
+            No api server found on this url.
           </div>
         </div>
       </div>

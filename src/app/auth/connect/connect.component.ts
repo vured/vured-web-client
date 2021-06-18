@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-auth-connect',
@@ -19,21 +20,30 @@ export class ConnectComponent implements OnInit {
   @ViewChild('apiInput') apiInput?: ElementRef;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
   }
 
-  connect(): void {
+  async connect(): Promise<void> {
     if (this.connectForm.invalid) {
       this.shakeInput();
-      return;
+      return
     }
 
+    localStorage.setItem('api', this.connectForm.controls.api.value);
 
-    console.log(1);
+    const isExist = await this.authService.checkForExistingUrl();
+
+    if (!isExist) {
+      this.connectForm.controls.api.setErrors({ notExist: true });
+      return
+    }
+
+    console.log('success');
   }
 
   shakeInput(): void {
