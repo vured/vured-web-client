@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from 'src/app/layout/layout.component';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { authRoutes } from 'src/app/auth/auth-routing';
+import { AuthGuard } from 'src/app/auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const topRoutes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children: routes
+    children: routes,
+    canActivate: [AuthGuard]
   }
 ];
 
