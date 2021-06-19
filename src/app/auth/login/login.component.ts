@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-login',
@@ -14,10 +15,12 @@ export class LoginComponent implements OnInit {
   });
 
   @ViewChild('loginFormElement') loginFormElement?: ElementRef;
+  @ViewChild('loginView') loginView?: ElementRef;
 
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
   }
 
@@ -38,6 +41,17 @@ export class LoginComponent implements OnInit {
       this.loginForm.controls.token.setErrors({ invalidToken: true });
       return;
     }
+
+    await this.navigateNext();
+  }
+
+  async navigateNext(): Promise<void> {
+    this.loginView?.nativeElement.classList.add('slide-out-blurred-top');
+
+    setTimeout(async () => await this.router.navigate(['dashboard'], {
+      state: { validUrl: true }
+    }), 500);
+
   }
 
   shakeForm(): void {
