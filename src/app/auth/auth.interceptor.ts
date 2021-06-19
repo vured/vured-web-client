@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -14,11 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
 
     request = request.clone({
-      url: api + request.url,
-      setHeaders: {
-        'Access-Control-Allow-Origin': environment.appUrl,
-        Version: '1'
-      }
+      url: api + request.url
     });
 
     if (!token) {
@@ -30,8 +25,6 @@ export class AuthInterceptor implements HttpInterceptor {
         Authorization: `Bearer ${ token }`
       }
     });
-
-    console.log(request);
 
     return next.handle(request);
   }

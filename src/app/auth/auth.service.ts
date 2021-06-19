@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { IndexDto } from 'src/app/auth/connect/index-dto';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { VerificationDto } from 'src/app/auth/connect/verification-dto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,11 @@ export class AuthService {
   ) {
   }
 
-  async checkForExistingUrl(): Promise<boolean> {
-    try {
-      await this.http.get<IndexDto>('').toPromise();
-      return true;
-    } catch (e) {
-      return false;
-    }
+  checkForExistingUrl(): Observable<VerificationDto> {
+    return this.http.get<VerificationDto>('/verification');
+  }
+
+  validateToken(): Observable<HttpResponse<Object>> {
+    return this.http.get('/verification/authenticated', { observe: 'response' });
   }
 }

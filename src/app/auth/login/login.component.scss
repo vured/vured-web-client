@@ -2,8 +2,8 @@
   animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 }
 
-.slide-out-top {
-  animation: slide-out-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+.slide-in-bottom {
+  animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
 @keyframes shake-horizontal {
@@ -30,14 +30,13 @@
   }
 }
 
-@keyframes slide-out-top {
+@keyframes slide-in-bottom {
   0% {
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
     transform: translateY(0);
     opacity: 1;
   }
-  100% {
-    transform: translateY(-1000px);
-    opacity: 0;
-  }
 }
-

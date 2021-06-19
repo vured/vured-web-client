@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-connect',
@@ -9,7 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class ConnectComponent implements OnInit {
   public connectForm = this.formBuilder.group({
-    api: ['', [
+    api: [localStorage.getItem('api'), [
       Validators.required,
       Validators.pattern('https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)')
     ]]
@@ -18,10 +19,12 @@ export class ConnectComponent implements OnInit {
   });
 
   @ViewChild('apiInput') apiInput?: ElementRef;
+  @ViewChild('connectView') connectView?: ElementRef;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
   }
 
@@ -31,19 +34,29 @@ export class ConnectComponent implements OnInit {
   async connect(): Promise<void> {
     if (this.connectForm.invalid) {
       this.shakeInput();
-      return
+      return;
     }
 
     localStorage.setItem('api', this.connectForm.controls.api.value);
 
-    const isExist = await this.authService.checkForExistingUrl();
-
-    if (!isExist) {
+    try {
+      await this.authService.checkForExistingUrl().toPromise();
+    } catch {
+      localStorage.removeItem('api')
       this.connectForm.controls.api.setErrors({ notExist: true });
-      return
+      return;
     }
 
-    console.log('success');
+    await this.navigateNext();
+  }
+
+  async navigateNext(): Promise<void> {
+    this.connectView?.nativeElement.classList.add('slide-out-top');
+
+    setTimeout(async () => await this.router.navigate(['login'], {
+      state: { validUrl: true }
+    }), 500);
+
   }
 
   shakeInput(): void {

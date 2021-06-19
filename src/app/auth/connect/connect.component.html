@@ -1,4 +1,4 @@
-<div class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5 select-none">
+<div class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5 select-none" #connectView>
   <form [formGroup]="connectForm" (ngSubmit)="connect()"
         class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
     <div class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -6,7 +6,7 @@
       <span class="block text-yellow-500">Give us your api url to start.</span>
       <div class="text-base mt-10">
         <input formControlName="api"
-               class="appearance-none block w-full bg-gray-900 rounded py-3 px-4 mb-3 focus:outline-none placeholder-gray-700"
+               class="appearance-none block w-full bg-gray-900 rounded-md py-3 px-4 mb-3 focus:outline-none placeholder-gray-700"
                id="grid-first-name" type="text" placeholder="https://my-server.tld:8080"
                #apiInput>
         <div class="text-yellow-500 font-bold"
@@ -23,7 +23,7 @@
     <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 lg:pl-20">
       <div class="inline-flex rounded-md shadow">
         <button type="submit"
-                class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md bg-yellow-500 focus:outline-none">
+                class="inline-flex text-gray-900 items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md bg-yellow-500 focus:outline-none">
           Connect
         </button>
       </div>

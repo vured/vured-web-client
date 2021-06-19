@@ -1,0 +1,26 @@
+<div class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5 select-none slide-in-bottom">
+  <div class="lg:text-center text-white">
+    <h2 class="text-base text-gray-400 font-semibold tracking-wide uppercase">{{ apiUrl }}</h2>
+    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-yellow-500 sm:text-4xl">
+      Lets to the authentication
+    </p>
+    <p class="mt-4 max-w-2xl text-xl lg:mx-auto mb-10">
+      Now enter the command <b>/login</b> on your server to get your login token.
+    </p>
+    <form class="flex mb-3" #loginFormElement [formGroup]="loginForm" (ngSubmit)="login()">
+      <input formControlName="token"
+             class="appearance-none block w-full bg-gray-900 rounded-l-md py-3 px-4 focus:outline-none placeholder-gray-700"
+             id="grid-first-name" type="text" placeholder="Type the token here">
+      <button type="submit"
+              class="inline-flex text-gray-900 items-center justify-center px-5 py-1 border border-transparent text-base font-medium rounded-r-md bg-yellow-500 focus:outline-none">
+        Login
+      </button>
+    </form>
+    <div class="text-yellow-500 font-bold"
+         *ngIf="loginForm.invalid && (loginForm.dirty || loginForm.touched)">
+      <div *ngIf="loginForm.controls.token.errors?.invalidToken">
+        The token is invalid.
+      </div>
+    </div>
+  </div>
+</div>
