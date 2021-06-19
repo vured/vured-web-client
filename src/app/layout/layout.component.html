@@ -1,5 +1,5 @@
-<div class="focus-in-contract">
-  <app-navbar></app-navbar>
+<div class="focus-in-contract" #layoutView>
+  <app-navbar (playLogoutTransition)="playLogoutTransition()"></app-navbar>
 
   <main class="text-white">
     <router-outlet></router-outlet>

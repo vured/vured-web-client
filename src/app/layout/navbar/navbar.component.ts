@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  @Output() playLogoutTransition = new EventEmitter();
+
+  @ViewChild('profileDropdown') profileDropdown?: ElementRef;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
+  toggleProfileDropdown(): void {
+    this.profileDropdown?.nativeElement.classList.toggle('hidden');
+  }
+
+  async logout(): Promise<void> {
+    this.authService.logout();
+    this.playLogoutTransition.emit();
+
+    setTimeout(async () => await this.router.navigate(['connect']), 2500);
+  }
 }

@@ -20,4 +20,9 @@ export class AuthService {
   validateToken(): Observable<HttpResponse<Object>> {
     return this.http.get('/verification/authenticated', { observe: 'response' });
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('api');
+  }
 }

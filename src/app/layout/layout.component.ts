@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
+  @ViewChild('layoutView') layoutView?: ElementRef;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  playLogoutTransition(): void {
+    this.layoutView?.nativeElement.classList.add('blur-out-contract-bck')
+  }
 }
