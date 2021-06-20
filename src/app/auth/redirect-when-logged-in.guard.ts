@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
-import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class RedirectWhenLoggedInGuard implements CanActivate {
 
   constructor(
-    private authService: AuthService,
     private router: Router
   ) {
   }
@@ -18,12 +15,13 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.validateToken().pipe(
-      map(response => response.ok),
-      catchError(async () => {
-        localStorage.removeItem('token');
-        return this.router.createUrlTree(['connect']);
-      })
-    );
+    const token = localStorage.getItem('token');
+    const api = localStorage.getItem('api');
+
+    if (token && api) {
+      return this.router.createUrlTree(['dashboard']);
+    } else {
+      return true;
+    }
   }
 }
