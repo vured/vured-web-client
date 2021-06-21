@@ -1,13 +1,21 @@
 <div class="fixed bottom-0 inset-x-0 text-white focus-in-contract select-none">
   <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-    <input class="rounded-t-md overflow-hidden appearance-none bg-gray-500 w-full"
-           type="range" min="1" max="100" step="1" value="0"/>
-    <div class="bg-gray-900 rounded-t-md px-3 sm:px-6 lg:px-8 py-1 flex">
+      <input class="progress rounded-t-md bg-gray-500 w-full flex" type="range" min="1" disabled
+             [max]="lastEvent?.duration"
+             step="1" [value]="progress"/>
+    <div class="bg-gray-900 px-3 sm:px-6 lg:px-8 py-1 flex items-center justify-between">
       <div class="w-20 flex gap-3 items-center h-10">
-        <fa-icon class="cursor-pointer text-xl" [icon]="faPlay"></fa-icon>
+        <fa-icon class="cursor-pointer text-xl" *ngIf="lastEvent?.isPaused" [icon]="faPlay"></fa-icon>
+        <fa-icon class="cursor-pointer text-xl" *ngIf="!lastEvent?.isPaused" [icon]="faPause"></fa-icon>
+
         <fa-icon class="cursor-pointer" [icon]="faStepForward"></fa-icon>
       </div>
-      <div class="flex items-center">
+      <div class="flex flex-col items-center">
+        <b>{{ lastEvent?.title }}</b>
+        <small>{{ lastEvent?.author }}</small>
+      </div>
+      <div class="flex flex-col items-center">
+        <input class="rounded-xl" type="range" min="0" max="100" step="1" [value]="lastEvent?.volume">
       </div>
     </div>
   </div>

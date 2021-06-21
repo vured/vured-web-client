@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
   private webSocket?: WebSocket;
+
+  public events = new Subject<PlayerEventDto>()
 
   constructor() {
   }
@@ -30,5 +33,7 @@ export class PlayerService {
     const blob = message.data as Blob;
     const blobText = await blob.text();
     const event = JSON.parse(blobText) as PlayerEventDto;
+
+    this.events.next(event)
   }
 }
