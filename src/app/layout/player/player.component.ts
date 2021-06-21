@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, EventEmitter, Input } from '@angular/core';
 import { faPause, faPlay, faStepForward, faVolumeDown } from '@fortawesome/free-solid-svg-icons';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
@@ -22,6 +22,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   private progressInterval: any;
 
   @ViewChild('volumeSlider') volumeSlider?: ElementRef;
+  @ViewChild('playerView') playerView?: ElementRef;
 
   constructor(
     private playerService: PlayerService
@@ -29,17 +30,29 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.playerService.connect();
 
-    this.playerService.events.subscribe(event => {
-      this.lastEvent = event;
-      this.progress = event.position || 0;
-      this.startProgress();
-    });
+    setTimeout(async () => {
+      await this.playerService.connect();
+      this.startListenForEvents();
+    }, 2000);
   }
 
   ngOnDestroy(): void {
     clearInterval(this.progressInterval);
+  }
+
+  startListenForEvents(): void {
+    this.playerService.events.subscribe(event => {
+      this.lastEvent = event;
+      this.progress = event.position || 0;
+
+      if (!event.uri) {
+        return this.hideView();
+      }
+
+      this.showView();
+      this.startProgress();
+    });
   }
 
   startProgress(): void {
@@ -56,6 +69,17 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
       this.progress = this.progress + 100;
     }, 100);
+  }
+
+  hideView(): void {
+    this.playerView?.nativeElement.classList.add('slide-out-bottom');
+    this.playerView?.nativeElement.classList.remove('slide-in-bottom');
+  }
+
+  showView(): void {
+    this.playerView?.nativeElement.classList.add('slide-in-bottom');
+    this.playerView?.nativeElement.classList.remove('slide-out-bottom');
+    this.playerView?.nativeElement.classList.remove('hidden');
   }
 
   onChangeVolume(): void {

@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 import { AuthService } from 'src/app/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserDto } from 'src/app/user/user-dto';
+import { PlayerService } from 'src/app/layout/player/player.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private playerService: PlayerService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -34,6 +36,7 @@ export class NavbarComponent implements OnInit {
   async logout(): Promise<void> {
     this.authService.logout();
     this.playLogoutTransition.emit();
+    this.playerService.events.next({ isPaused: false, volume: 0 });
 
     setTimeout(async () => await this.router.navigate(['connect']), 2500);
   }
