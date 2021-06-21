@@ -1,27 +1,23 @@
-.progress {
+input[type='range'] {
+  overflow: hidden;
+  -webkit-appearance: none;
+  background-color: #374151;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  input[type='range'] {
-    overflow: hidden;
-    -webkit-appearance: none;
-    background-color: #374151;
-  }
-
-  input[type='range']::-webkit-slider-thumb {
-    width: 10px;
-    -webkit-appearance: none;
-    height: 5px;
-    cursor: ew-resize;
-    background: #434343;
-    box-shadow: -1500px 0 0 1500px #F59E0B;
-  }
-
+input[type='range']::-webkit-slider-thumb {
+  width: 5px;
+  -webkit-appearance: none;
+  height: 5px;
+  cursor: pointer;
+  background: #F59E0B;
+  box-shadow: -1500px 0 0 1500px #F59E0B;
 }
+
 
 input[type="range"]::-moz-range-progress {
   background-color: #F59E0B;
 }
+
 input[type="range"]::-moz-range-track {
   background-color: #374151;
 }

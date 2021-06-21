@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { faPause, faPlay, faStepForward } from '@fortawesome/free-solid-svg-icons';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { faPause, faPlay, faStepForward, faVolumeDown } from '@fortawesome/free-solid-svg-icons';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
 
@@ -9,14 +9,19 @@ import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit, OnDestroy {
-  public faPlay = faPlay;
-  public faPause = faPause;
-  public faStepForward = faStepForward;
+  public icon = {
+    play: faPlay,
+    pause: faPause,
+    stepForward: faStepForward,
+    volumeDown: faVolumeDown
+  };
 
   public lastEvent?: PlayerEventDto;
   public progress?: number;
 
   private progressInterval: any;
+
+  @ViewChild('volumeSlider') volumeSlider?: ElementRef;
 
   constructor(
     private playerService: PlayerService
@@ -27,10 +32,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
     await this.playerService.connect();
 
     this.playerService.events.subscribe(event => {
-      console.log(event);
       this.lastEvent = event;
       this.progress = event.position || 0;
-      console.log(this.progress);
       this.startProgress();
     });
   }
@@ -47,11 +50,33 @@ export class PlayerComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if(!this.progress) {
+      if (!this.progress) {
         this.progress = 0;
       }
 
       this.progress = this.progress + 100;
     }, 100);
+  }
+
+  onChangeVolume(): void {
+    const newVolume = this.volumeSlider?.nativeElement.value;
+
+    if (newVolume == null) {
+      return;
+    }
+
+    this.playerService.requestNewVolume(newVolume);
+  }
+
+  onClickPlay(): void {
+    this.playerService.requestPlay();
+  }
+
+  onClickPause(): void {
+    this.playerService.requestPause();
+  }
+
+  onClickNext(): void {
+    this.playerService.requestNext();
   }
 }
