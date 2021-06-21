@@ -11,7 +11,8 @@ import { NavbarComponent } from 'src/app/layout/navbar/navbar.component';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FontAwesomeModule
   ]
 })
 export class LayoutModule { }

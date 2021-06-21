@@ -8,6 +8,7 @@ import { DashboardModule } from 'src/app/dashboard/dashboard.module';
 import { AuthModule } from 'src/app/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/auth/auth.interceptor';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AuthInterceptor } from 'src/app/auth/auth.interceptor';
     HttpClientModule,
     AuthModule,
     LayoutModule,
-    DashboardModule
+    DashboardModule,
+    FontAwesomeModule
   ],
   providers: [
     {
