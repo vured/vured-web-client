@@ -1,8 +1,10 @@
-<div class="focus-in-contract" #layoutView>
+<div class="focus-in-contract block" #layoutView>
   <app-navbar (playLogoutTransition)="playLogoutTransition()"></app-navbar>
 
   <main class="text-white">
     <router-outlet></router-outlet>
   </main>
+
 </div>
+<app-player></app-player>
 
