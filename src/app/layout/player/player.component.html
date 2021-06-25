@@ -1,4 +1,4 @@
-<div class="fixed bottom-0 inset-x-0 text-white focus-in-contract select-none hidden slide-out-bottom" #playerView>
+<div class="fixed bottom-0 inset-x-0 text-gray-300 focus-in-contract select-none hidden slide-out-bottom" #playerView>
   <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
     <div class="range">
       <input class="rounded-t-md bg-gray-500 w-full flex" type="range" min="1" disabled step="1"
@@ -10,13 +10,21 @@
         <fa-icon class="cursor-pointer text-xl"
                  (click)="onClickPlay()"
                  *ngIf="lastEvent?.isPaused"
-                 [icon]="icon.play"></fa-icon>
+                 [icon]="icon.play">
+        </fa-icon>
         <fa-icon class="cursor-pointer text-xl"
                  (click)="onClickPause()"
                  *ngIf="!lastEvent?.isPaused"
-                 [icon]="icon.pause"></fa-icon>
-
-        <fa-icon class="cursor-pointer" (click)="onClickNext()" [icon]="icon.stepForward"></fa-icon>
+                 [icon]="icon.pause">
+        </fa-icon>
+        <fa-icon class="cursor-pointer"
+                 (click)="onClickNext()"
+                 [icon]="icon.stepForward">
+        </fa-icon>
+        <fa-icon class="cursor-pointer text-red-500"
+                 (click)="onClickStop()"
+                 [icon]="icon.stop">
+        </fa-icon>
       </div>
       <div class="flex flex-col items-center">
         <a target="_blank" [href]="lastEvent?.uri">

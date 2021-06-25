@@ -57,6 +57,10 @@ export class PlayerService {
     this.http.get('/player/next').subscribe();
   }
 
+  requestStop(): void {
+    this.http.get('/player/stop').subscribe();
+  }
+
   requestRemoveFromQueue(queueItem: PlayerEventQueueItem): void {
     this.http.post('/player/remove', queueItem).subscribe();
   }

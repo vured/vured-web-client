@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, EventEmitter, Input } from '@angular/core';
-import { faPause, faPlay, faStepForward, faVolumeDown } from '@fortawesome/free-solid-svg-icons';
+import { faPause, faPlay, faStepForward, faVolumeDown, faStop } from '@fortawesome/free-solid-svg-icons';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
 
@@ -12,6 +12,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   public icon = {
     play: faPlay,
     pause: faPause,
+    stop: faStop,
     stepForward: faStepForward,
     volumeDown: faVolumeDown
   };
@@ -102,5 +103,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   onClickNext(): void {
     this.playerService.requestNext();
+  }
+
+  onClickStop(): void {
+    this.playerService.requestStop();
   }
 }
