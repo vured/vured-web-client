@@ -4,6 +4,7 @@ import { urlPattern } from 'src/app/auth/connect/connect.component';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { UserDto } from 'src/app/user/user-dto';
 import { ActivatedRoute } from '@angular/router';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search',
@@ -12,11 +13,16 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
   public favicon?: string;
+  public icon = {
+    exclamationCircle: faExclamationCircle
+  };
+
   public searchForm = this.formBuilder.group({
     query: ['', [Validators.required]]
   }, {
-    updateOn: 'submit'
+    updateOn: 'change'
   });
+
   private user: UserDto;
 
   constructor(
@@ -55,7 +61,9 @@ export class SearchComponent implements OnInit {
   }
 
   searchUrl(query: string): void {
-    this.playerService.requestQueueTrack(query, this.user.discord);
+    this.playerService.requestQueueTrack(query, this.user.discord).catch(() => {
+      this.searchForm.controls.query.setErrors({ requestError: true });
+    });
   }
 
   searchYouTube(query: string): void {
