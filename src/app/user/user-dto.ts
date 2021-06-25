@@ -1,5 +1,5 @@
 export type UserDto = {
-  discord: number,
+  discord: string,
   name: string,
   avatar: string
 }

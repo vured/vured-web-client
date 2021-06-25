@@ -1,0 +1,14 @@
+<div class="bg-gray-900 p-3 rounded-md">
+  <form [formGroup]="searchForm" (ngSubmit)="search()">
+    <div class="relative">
+      <img class="absolute right-4 top-2" alt="url-icon" [src]="favicon" *ngIf="favicon">
+      <input formControlName="query"
+             class="appearance-none block w-full bg-gray-800 rounded-md py-3 px-4 focus:outline-none placeholder-gray-300"
+             type="text" placeholder="https://my-video.tld/"
+             #queryElement (keyup)="setFavicon(queryElement.value)" (change)="setFavicon(queryElement.value)">
+    </div>
+  </form>
+  <div class="flex justify-center">
+
+  </div>
+</div>

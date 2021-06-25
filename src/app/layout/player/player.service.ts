@@ -38,8 +38,6 @@ export class PlayerService {
     const blobText = await blob.text();
     const event = JSON.parse(blobText) as PlayerEventDto;
 
-    console.log(event);
-
     this.events.next(event);
   }
 
@@ -61,5 +59,9 @@ export class PlayerService {
 
   requestRemoveFromQueue(queueItem: PlayerEventQueueItem): void {
     this.http.post('/player/remove', queueItem).subscribe();
+  }
+
+  requestQueueTrack(url: string, member: string): void {
+    this.http.post('/player/queue', { url, member }).subscribe();
   }
 }
