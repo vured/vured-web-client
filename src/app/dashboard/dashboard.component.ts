@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserDto } from 'src/app/user/user-dto';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  public user: UserDto
+
+  constructor(
+    private route: ActivatedRoute
+  ) {
+    this.user = this.route.parent?.snapshot.data.user;
+  }
 
   ngOnInit(): void {
   }

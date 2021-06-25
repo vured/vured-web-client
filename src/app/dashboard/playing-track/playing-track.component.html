@@ -1,0 +1,34 @@
+<div class="bg-gray-900 rounded-md p-3 scale-in-ver-top" *ngIf="lastEvent?.uri; else notPlayingContent">
+  <img src="https://img.youtube.com/vi/{{ lastEvent?.identifier }}/mqdefault.jpg" alt="thumbnail"
+       class="rounded-md w-full mx-auto h-16 object-cover mb-3 shadow-lg"
+       *ngIf="isYoutube(lastEvent?.uri)">
+  <div class="text-center font-medium mb-3 text-yellow-500">
+    {{ lastEvent?.title }}
+  </div>
+  <div class="flex justify-center">
+    <div class="text-xs pr-4">
+      <fa-icon [icon]="icon.clock"></fa-icon>
+      {{ lastEvent?.isStream ? 'Stream' : getDurationFromMilliseconds(lastEvent?.duration) }}
+    </div>
+    <div class="text-xs">
+      <fa-icon [icon]="icon.user"></fa-icon>
+      {{ lastEvent?.author }}
+    </div>
+  </div>
+  <div class="mt-5">
+    <div class="separator text-yellow-500">Queue</div>
+    <div class="flex justify-between pt-1" *ngFor="let item of lastEvent?.queue">
+      <a target="_blank" class="truncate overflow-clip text-sm" [href]="lastEvent?.uri">
+        {{ item?.title }}
+      </a>
+      <div class="bg-gray-900 w-8 text-right">
+        <fa-icon class="text-red-600 cursor-pointer" [icon]="icon.trash" (click)="removeFromQueue(item)"></fa-icon>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #notPlayingContent>
+  <div class="bg-gray-900 py-6 text-center rounded-md scale-in-ver-bottom">
+    Nothing is playing<br> at the moment
+  </div>
+</ng-template>
