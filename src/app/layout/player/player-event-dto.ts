@@ -1,3 +1,5 @@
+import { PlayerEventQueueItem } from 'src/app/layout/player/player-event-queue-item';
+
 export type PlayerEventDto = {
   isPaused: boolean,
   volume: number,
@@ -6,5 +8,7 @@ export type PlayerEventDto = {
   isStream?: boolean,
   uri?: string,
   duration?: number,
-  position?: number
+  position?: number,
+  identifier?: string,
+  queue?: PlayerEventQueueItem[]
 }

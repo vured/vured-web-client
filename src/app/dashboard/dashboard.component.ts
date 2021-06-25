@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PlayerService } from 'src/app/layout/player/player.service';
+import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  public lastEvent?: PlayerEventDto;
 
-  ngOnInit(): void {
+  constructor(
+    private playerService: PlayerService
+  ) {
   }
 
+  ngOnInit(): void {
+    this.playerService.events.subscribe(event => this.lastEvent = event);
+  }
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { PlayerEventQueueItem } from 'src/app/layout/player/player-event-queue-item';
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +55,17 @@ export class PlayerService {
 
   requestNext(): void {
     this.http.get('/player/next').subscribe();
+  }
+
+  requestStop(): void {
+    this.http.get('/player/stop').subscribe();
+  }
+
+  requestRemoveFromQueue(queueItem: PlayerEventQueueItem): void {
+    this.http.post('/player/remove', queueItem).subscribe();
+  }
+
+  requestQueueTrack(url: string, member: string): Promise<Object> {
+    return this.http.post('/player/queue', { url, member }).toPromise();
   }
 }

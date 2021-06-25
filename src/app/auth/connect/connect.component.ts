@@ -3,6 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
 
+export const urlPattern = 'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)'
+
 @Component({
   selector: 'app-auth-connect',
   templateUrl: './connect.component.html',
@@ -12,7 +14,7 @@ export class ConnectComponent implements OnInit {
   public connectForm = this.formBuilder.group({
     api: [localStorage.getItem('api'), [
       Validators.required,
-      Validators.pattern('https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)')
+      Validators.pattern(urlPattern)
     ]]
   }, {
     updateOn: 'change'
