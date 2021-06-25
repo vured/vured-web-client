@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDto } from 'src/app/user/user-dto';
-import { ActivatedRoute } from '@angular/router';
+import { PlayerService } from 'src/app/layout/player/player.service';
+import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,15 +9,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  public user: UserDto
+  public lastEvent?: PlayerEventDto;
 
   constructor(
-    private route: ActivatedRoute
+    private playerService: PlayerService
   ) {
-    this.user = this.route.parent?.snapshot.data.user;
   }
 
   ngOnInit(): void {
+    this.playerService.events.subscribe(event => this.lastEvent = event);
   }
-
 }

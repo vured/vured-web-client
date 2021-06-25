@@ -28,7 +28,9 @@
   </div>
 </div>
 <ng-template #notPlayingContent>
-  <div class="bg-gray-900 py-6 text-center rounded-md scale-in-ver-bottom">
-    Nothing is playing<br> at the moment
+  <div class="bg-gray-900 py-6 text-center flex flex-col items-center rounded-md scale-in-ver-bottom py-9">
+    <img class="h-24 w-24 rounded-full mb-4" alt="profile-picture" [src]="user.avatar">
+    <p>Hello <b>{{ user.name }}</b> 👋</p>
+    <p>Nothing is currently playing.</p>
   </div>
 </ng-template>

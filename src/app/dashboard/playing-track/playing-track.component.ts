@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
-import { faClock, faUser, faTrashAlt, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faUser, faTrashAlt, faVolumeMute, faHandPointRight } from '@fortawesome/free-solid-svg-icons';
 import { PlayerEventQueueItem } from 'src/app/layout/player/player-event-queue-item';
+import { UserDto } from 'src/app/user/user-dto';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-playing-track',
@@ -14,14 +16,18 @@ export class PlayingTrackComponent implements OnInit {
     clock: faClock,
     user: faUser,
     trash: faTrashAlt,
-    volumeMute: faVolumeMute
+    volumeMute: faVolumeMute,
+    handPointRight: faHandPointRight
   };
 
+  public user: UserDto;
   public lastEvent?: PlayerEventDto;
 
   constructor(
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private route: ActivatedRoute
   ) {
+    this.user = this.route.snapshot.parent?.data.user;
   }
 
   ngOnInit(): void {
