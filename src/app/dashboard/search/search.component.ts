@@ -40,27 +40,31 @@ export class SearchComponent implements OnInit {
   }
 
   setFavicon(url: string): void {
+    if(url == '' || url == null) {
+      delete this.favicon;
+      return;
+    }
+
     if (RegExp(urlPattern).test(url)) {
       this.favicon = `https://www.google.com/s2/favicons?sz=32&domain_url=${ url }`;
     } else {
-      delete this.favicon;
+      this.favicon = `https://www.google.com/s2/favicons?sz=32&domain_url=https://youtube.com`;
     }
   }
 
   search(): void {
     if (this.searchForm.invalid) {
-      console.log(this.searchForm.controls.query.errors)
+      console.log(this.searchForm.controls.query.errors);
       return;
     }
 
-    const query = this.searchForm.controls.query.value;
+    let query = this.searchForm.controls.query.value;
 
-    if (RegExp(urlPattern).test(query)) {
-      this.searchUrl(query);
-    } else {
-      this.searchYouTube(query);
+    if (!RegExp(urlPattern).test(query)) {
+      query = `ytsearch:${query}`
     }
 
+    this.searchUrl(query);
     this.searchForm.controls.query.setValue('');
   }
 
@@ -68,9 +72,5 @@ export class SearchComponent implements OnInit {
     this.playerService.requestQueueTrack(query, this.user.discord).catch(() => {
       this.searchForm.controls.query.setErrors({ requestError: true });
     });
-  }
-
-  searchYouTube(query: string): void {
-    console.log({ youtube: query });
   }
 }

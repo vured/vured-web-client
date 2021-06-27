@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, EventEmitter, Input } from '@angular/core';
-import { faPause, faPlay, faStepForward, faVolumeDown, faStop } from '@fortawesome/free-solid-svg-icons';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { faPause, faPlay, faStepForward, faStop, faVolumeDown } from '@fortawesome/free-solid-svg-icons';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
 
@@ -31,11 +31,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-
-    setTimeout(async () => {
-      await this.playerService.connect();
-      this.startListenForEvents();
-    }, 2000);
+    await this.playerService.connect();
+    this.startListenForEvents();
   }
 
   ngOnDestroy(): void {

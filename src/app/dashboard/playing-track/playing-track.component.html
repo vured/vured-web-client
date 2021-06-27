@@ -1,6 +1,6 @@
 <div class="bg-gray-900 rounded-md p-3 scale-in-ver-top" *ngIf="lastEvent?.uri; else notPlayingContent">
   <img src="https://img.youtube.com/vi/{{ lastEvent?.identifier }}/mqdefault.jpg" alt="thumbnail"
-       class="rounded-md w-full mx-auto h-16 object-cover mb-3 shadow-lg"
+       class="rounded-md w-full mx-auto h-24 object-cover mb-3 shadow-lg"
        *ngIf="isYoutube(lastEvent?.uri)">
   <div class="text-center font-medium mb-3 text-yellow-500">
     {{ lastEvent?.title }}
