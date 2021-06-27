@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
 
-export const urlPattern = 'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)'
+export const urlPattern = 'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)';
 
 @Component({
   selector: 'app-auth-connect',
@@ -22,6 +22,8 @@ export class ConnectComponent implements OnInit {
 
   @ViewChild('apiInput') apiInput?: ElementRef;
   @ViewChild('connectView') connectView?: ElementRef;
+  @ViewChild('connectBtn') connectBtn?: ElementRef;
+  @ViewChild('connectBtnSpinner') connectBtnSpinner?: ElementRef;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,20 +36,32 @@ export class ConnectComponent implements OnInit {
   }
 
   async connect(): Promise<void> {
+    const connectBtnElement = this.connectBtn?.nativeElement;
+    const connectBtnSpinnerElement = this.connectBtnSpinner?.nativeElement;
+
     if (this.connectForm.invalid) {
       this.shakeInput();
       return;
     }
+
+    connectBtnElement.disabled = true;
+    connectBtnSpinnerElement.classList.remove('hidden');
 
     localStorage.setItem('api', this.connectForm.controls.api.value);
 
     try {
       await this.authService.checkForExistingUrl().toPromise();
     } catch {
-      localStorage.removeItem('api')
+      connectBtnElement.disabled = false;
+      connectBtnSpinnerElement.classList.add('hidden');
+
+      localStorage.removeItem('api');
       this.connectForm.controls.api.setErrors({ notExist: true });
       return;
     }
+
+    connectBtnElement.disabled = false;
+    connectBtnSpinnerElement.classList.add('hidden');
 
     await this.navigateNext();
   }

@@ -1,4 +1,5 @@
-<div class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5 select-none slide-in-bottom" #loginView>
+<div class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5 select-none slide-in-bottom"
+     #loginView>
   <div class="lg:text-center text-white">
     <h2 class="text-base text-gray-400 font-semibold tracking-wide uppercase">{{ apiUrl }}</h2>
     <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-yellow-500 sm:text-4xl">
@@ -12,7 +13,14 @@
              class="appearance-none block w-full bg-gray-900 rounded-l-md py-3 px-4 focus:outline-none placeholder-gray-700"
              type="text" placeholder="Type the token here">
       <button type="submit"
-              class="inline-flex text-gray-900 items-center justify-center px-5 py-1 border border-transparent text-base font-medium rounded-r-md bg-yellow-500 focus:outline-none">
+              class="inline-flex text-gray-900 items-center justify-center px-5 py-1 border border-transparent text-base font-medium rounded-r-md bg-yellow-500 focus:outline-none"
+              #loginBtn>
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-900 hidden" fill="none" viewBox="0 0 24 24"
+             #loginBtnSpinner>
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+        </svg>
         Login
       </button>
     </form>
