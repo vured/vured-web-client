@@ -12,6 +12,10 @@
           <fa-icon class="text-5xl text-yellow-500" [icon]="icon.exclamationCircle"></fa-icon>
           <p class="mt-2">Failed to start track. Are you in a voice channel and the bot can see you?</p>
         </div>
+        <div *ngIf="searchForm.controls.query.errors?.custom">
+          <fa-icon class="text-5xl text-yellow-500" [icon]="icon.exclamationCircle"></fa-icon>
+          <p class="mt-2">{{ searchForm.controls.query.errors?.custom.message }}</p>
+        </div>
       </div>
     </div>
   </form>

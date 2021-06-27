@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PlayerEventQueueItem } from 'src/app/layout/player/player-event-queue-item';
+import { PlayerMessageEventDto } from 'src/app/layout/player/player-message-event-dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
-  private webSocket?: WebSocket;
+  private messageSocket?: WebSocket;
+  private playerSocket?: WebSocket;
 
+  public messageEvents = new Subject<PlayerMessageEventDto>();
   public events = new Subject<PlayerEventDto>();
 
   constructor(
@@ -28,17 +31,27 @@ export class PlayerService {
     api = api.replace('https://', 'wss://');
     api = api.replace('http://', 'ws://');
 
-    this.webSocket = new WebSocket(`${ api }/player/${ token }`);
+    this.playerSocket = new WebSocket(`${ api }/player/${ token }`);
+    this.messageSocket = new WebSocket(`${ api }/player/message/${ token }`);
 
-    this.webSocket.onmessage = message => this.handleEvent(message);
+    this.playerSocket.onmessage = message => this.handlePlayerEvent(message);
+    this.messageSocket.onmessage = message => this.handlePlayerMessageEvent(message);
   }
 
-  async handleEvent(message: MessageEvent): Promise<void> {
+  async handlePlayerEvent(message: MessageEvent): Promise<void> {
     const blob = message.data as Blob;
     const blobText = await blob.text();
     const event = JSON.parse(blobText) as PlayerEventDto;
 
     this.events.next(event);
+  }
+
+  async handlePlayerMessageEvent(message: MessageEvent): Promise<void> {
+    const blob = message.data as Blob;
+    const blobText = await blob.text();
+    const event = JSON.parse(blobText) as PlayerMessageEventDto;
+
+    this.messageEvents.next(event);
   }
 
   requestPause(): void {

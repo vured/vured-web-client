@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { PlayerEventDto } from 'src/app/layout/player/player-event-dto';
-import { faClock, faUser, faTrashAlt, faVolumeMute, faHandPointRight } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faHandPointRight, faTrashAlt, faUser, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
 import { PlayerEventQueueItem } from 'src/app/layout/player/player-event-queue-item';
 import { UserDto } from 'src/app/user/user-dto';
 import { ActivatedRoute } from '@angular/router';
@@ -40,7 +40,7 @@ export class PlayingTrackComponent implements OnInit {
 
   getDurationFromMilliseconds(ms: number = 0): string {
     function pad(num: number) {
-      return `${num}`.padStart(2, '0');
+      return `${ num }`.padStart(2, '0');
     }
 
     let asSeconds = ms / 1000;
@@ -55,8 +55,8 @@ export class PlayingTrackComponent implements OnInit {
     }
 
     return hours
-      ? `${(pad(hours))}:${pad(minutes)}:${pad(seconds)}`
-      : `${(pad(minutes))}:${pad(seconds)}`;
+      ? `${ (pad(hours)) }:${ pad(minutes) }:${ pad(seconds) }`
+      : `${ (pad(minutes)) }:${ pad(seconds) }`;
   }
 
   removeFromQueue(queueItem: PlayerEventQueueItem) {

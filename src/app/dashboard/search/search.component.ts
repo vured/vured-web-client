@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   public searchForm = this.formBuilder.group({
     query: ['', [Validators.required]]
   }, {
-    updateOn: 'change'
+    updateOn: 'submit'
   });
 
   private user: UserDto;
@@ -34,6 +34,9 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.playerService.messageEvents.subscribe(event => {
+      this.searchForm.controls.query.setErrors({ custom: event });
+    });
   }
 
   setFavicon(url: string): void {
@@ -46,6 +49,7 @@ export class SearchComponent implements OnInit {
 
   search(): void {
     if (this.searchForm.invalid) {
+      console.log(this.searchForm.controls.query.errors)
       return;
     }
 
