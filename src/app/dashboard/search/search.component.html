@@ -4,13 +4,44 @@
       <img class="absolute right-4 top-2" alt="url-icon" [src]="favicon" *ngIf="favicon">
       <input formControlName="query"
              class="appearance-none block w-full bg-gray-800 rounded-md py-3 px-4 focus:outline-none placeholder-gray-300"
-             type="text" placeholder="Type an url here"
+             type="text" placeholder="Search in youtube or type an url"
              #queryElement (keyup)="setFavicon(queryElement.value)" (change)="setFavicon(queryElement.value)">
-      <div class="flex flex-col text-center items-center py-10"
-           *ngIf="searchForm.invalid && (searchForm.dirty || searchForm.touched)">
-        <div *ngIf="searchForm.controls.query.errors?.requestError">
-          <fa-icon class="text-5xl text-yellow-500" [icon]="icon.exclamationCircle"></fa-icon>
-          <p class="mt-2">Failed to start track. Are you in a voice channel and the bot can see you?</p>
+      <div class="flex flex-col text-center justify-center items-center h-40">
+        <ng-template #defaultView>
+          <div class="flex items-start">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center">
+              <fa-icon class="text-5xl text-gray-300" [icon]="icon.search"></fa-icon>
+            </div>
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <h3 class="text-lg leading-6 font-medium text-gray-300" id="modal-title">
+                Supported websites
+              </h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500 flex space-x-1">
+                  <span><span class="text-red-600">Y</span>ouTube,</span>
+                  <span><span class="text-purple-500">T</span>witch,</span>
+                  <span><span class="text-yellow-600">S</span>oundCloud</span>
+                  <span>
+                    and any direct url
+                    (<a href="https://github.com/vured/vured-bot/wiki"
+                        target="_blank" class="text-blue-500">More info</a>)
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="searchForm.invalid && searchForm.dirty; else defaultView">
+          <div *ngIf="searchForm.controls.query.errors?.requestError">
+            <fa-icon class="text-5xl text-yellow-500" [icon]="icon.exclamationCircle"></fa-icon>
+            <p class="mt-2">Failed to start track. Are you in a voice channel and the bot can see you?</p>
+          </div>
+          <div *ngIf="searchForm.controls.query.errors?.custom">
+            <fa-icon class="text-5xl text-yellow-500" [icon]="icon.exclamationCircle"></fa-icon>
+            <p class="mt-2">{{ searchForm.controls.query.errors?.custom.message }}</p>
+          </div>
+          <div *ngIf="!searchForm.controls.query.errors?.required; else defaultView"></div>
         </div>
       </div>
     </div>

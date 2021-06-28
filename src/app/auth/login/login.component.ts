@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('loginFormElement') loginFormElement?: ElementRef;
   @ViewChild('loginView') loginView?: ElementRef;
+  @ViewChild('loginBtn') loginBtn?: ElementRef;
+  @ViewChild('loginBtnSpinner') loginBtnSpinner?: ElementRef;
 
   constructor(
     private authService: AuthService,
@@ -28,19 +30,30 @@ export class LoginComponent implements OnInit {
   }
 
   async login(): Promise<void> {
+    const loginBtnElement = this.loginBtn?.nativeElement;
+    const loginBtnSpinnerElement = this.loginBtnSpinner?.nativeElement;
+
     if (this.loginForm.invalid) {
       this.shakeForm();
       return;
     }
+
+    loginBtnElement.disabled = true;
+    loginBtnSpinnerElement.classList.remove('hidden');
 
     localStorage.setItem('token', this.loginForm.controls.token.value);
 
     try {
       await this.authService.validateToken().toPromise();
     } catch {
+      loginBtnElement.disabled = false;
+      loginBtnSpinnerElement.classList.add('hidden');
       this.loginForm.controls.token.setErrors({ invalidToken: true });
       return;
     }
+
+    loginBtnElement.disabled = false;
+    loginBtnSpinnerElement.classList.add('hidden');
 
     await this.navigateNext();
   }

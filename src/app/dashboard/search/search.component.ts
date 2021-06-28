@@ -4,7 +4,7 @@ import { urlPattern } from 'src/app/auth/connect/connect.component';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { UserDto } from 'src/app/user/user-dto';
 import { ActivatedRoute } from '@angular/router';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +14,8 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 export class SearchComponent implements OnInit {
   public favicon?: string;
   public icon = {
-    exclamationCircle: faExclamationCircle
+    exclamationCircle: faExclamationCircle,
+    search: faSearch
   };
 
   public searchForm = this.formBuilder.group({
@@ -34,13 +35,21 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.playerService.messageEvents.subscribe(event => {
+      this.searchForm.controls.query.setErrors({ custom: event });
+    });
   }
 
   setFavicon(url: string): void {
+    if(url == '' || url == null) {
+      delete this.favicon;
+      return;
+    }
+
     if (RegExp(urlPattern).test(url)) {
       this.favicon = `https://www.google.com/s2/favicons?sz=32&domain_url=${ url }`;
     } else {
-      delete this.favicon;
+      this.favicon = `https://www.google.com/s2/favicons?sz=32&domain_url=https://youtube.com`;
     }
   }
 
@@ -49,14 +58,13 @@ export class SearchComponent implements OnInit {
       return;
     }
 
-    const query = this.searchForm.controls.query.value;
+    let query = this.searchForm.controls.query.value;
 
-    if (RegExp(urlPattern).test(query)) {
-      this.searchUrl(query);
-    } else {
-      this.searchYouTube(query);
+    if (!RegExp(urlPattern).test(query)) {
+      query = `ytsearch:${query}`
     }
 
+    this.searchUrl(query);
     this.searchForm.controls.query.setValue('');
   }
 
@@ -64,9 +72,5 @@ export class SearchComponent implements OnInit {
     this.playerService.requestQueueTrack(query, this.user.discord).catch(() => {
       this.searchForm.controls.query.setErrors({ requestError: true });
     });
-  }
-
-  searchYouTube(query: string): void {
-    console.log({ youtube: query });
   }
 }
