@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PlayerEventQueueItem } from 'src/app/layout/player/player-event-queue-item';
 import { PlayerMessageEventDto } from 'src/app/layout/player/player-message-event-dto';
+import { ModalService } from 'src/app/layout/modal/modal.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +19,10 @@ export class PlayerService {
   public events = new Subject<PlayerEventDto>();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private modalService: ModalService,
+    private authService: AuthService,
+    private router: Router
   ) {
   }
 
@@ -25,6 +31,14 @@ export class PlayerService {
     let token = localStorage.getItem('token');
 
     if (!api || !token) {
+      await this.router.navigate(['login']);
+      return;
+    }
+
+    try {
+      this.authService.validateToken();
+    } catch {
+      await this.router.navigate(['login']);
       return;
     }
 
@@ -33,6 +47,9 @@ export class PlayerService {
 
     this.playerSocket = new WebSocket(`${ api }/player/${ token }`);
     this.messageSocket = new WebSocket(`${ api }/player/message/${ token }`);
+
+    this.playerSocket.onopen = () => this.modalService.disableModal.next();
+    this.playerSocket.onclose = () => this.restoreConnectionAndSendError();
 
     this.playerSocket.onmessage = message => this.handlePlayerEvent(message);
     this.messageSocket.onmessage = message => this.handlePlayerMessageEvent(message);
@@ -52,6 +69,11 @@ export class PlayerService {
     const event = JSON.parse(blobText) as PlayerMessageEventDto;
 
     this.messageEvents.next(event);
+  }
+
+  restoreConnectionAndSendError(): void {
+    this.modalService.enableModal.next('connection-lost');
+    setTimeout(() => this.connect(), 2000);
   }
 
   requestPause(): void {
