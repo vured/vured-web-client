@@ -4,7 +4,7 @@ import { urlPattern } from 'src/app/auth/connect/connect.component';
 import { PlayerService } from 'src/app/layout/player/player.service';
 import { UserDto } from 'src/app/user/user-dto';
 import { ActivatedRoute } from '@angular/router';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search',
@@ -14,13 +14,14 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 export class SearchComponent implements OnInit {
   public favicon?: string;
   public icon = {
-    exclamationCircle: faExclamationCircle
+    exclamationCircle: faExclamationCircle,
+    search: faSearch
   };
 
   public searchForm = this.formBuilder.group({
     query: ['', [Validators.required]]
   }, {
-    updateOn: 'submit'
+    updateOn: 'change'
   });
 
   private user: UserDto;
@@ -54,7 +55,6 @@ export class SearchComponent implements OnInit {
 
   search(): void {
     if (this.searchForm.invalid) {
-      console.log(this.searchForm.controls.query.errors);
       return;
     }
 
