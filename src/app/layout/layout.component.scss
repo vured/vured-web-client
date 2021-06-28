@@ -2,8 +2,16 @@
   animation: focus-in-contract 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
-.blur-out-contract-bck {
-  animation: blur-out-contract-bck 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+.slide-in-blurred-bottom {
+  animation: slide-in-blurred-bottom 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+.focus-in-contract-bck {
+  animation: focus-in-contract-bck 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.text-focus-in {
+  animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
 @keyframes focus-in-contract {
@@ -18,14 +26,28 @@
   }
 }
 
-@keyframes blur-out-contract-bck {
+@keyframes focus-in-contract-bck {
   0% {
-    transform: translateZ(0);
-    filter: blur(0.01);
+    letter-spacing: 1em;
+    transform: translateZ(300px);
+    filter: blur(12px);
+    opacity: 0;
   }
   100% {
-    letter-spacing: -0.5em;
-    transform: translateZ(-500px);
-    filter: blur(12px) opacity(0%);
+    transform: translateZ(12px);
+    filter: blur(0);
+    opacity: 1;
   }
 }
+
+@keyframes text-focus-in {
+  0% {
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
