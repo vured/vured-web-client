@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class PlayerService {
   private messageSocket?: WebSocket;
   private playerSocket?: WebSocket;
+  private reconnectAttempts = 0;
 
   public messageEvents = new Subject<PlayerMessageEventDto>();
   public events = new Subject<PlayerEventDto>();
@@ -48,9 +49,12 @@ export class PlayerService {
     this.playerSocket = new WebSocket(`${ api }/player/${ token }`);
     this.messageSocket = new WebSocket(`${ api }/player/message/${ token }`);
 
-    this.playerSocket.onopen = () => this.modalService.disableModal.next();
-    this.playerSocket.onclose = () => this.restoreConnectionAndSendError();
+    this.playerSocket.onopen = () => {
+      this.modalService.disableModal.next();
+      this.reconnectAttempts = 0;
+    };
 
+    this.playerSocket.onclose = () => this.restoreConnectionAndSendError();
     this.playerSocket.onmessage = message => this.handlePlayerEvent(message);
     this.messageSocket.onmessage = message => this.handlePlayerMessageEvent(message);
   }
@@ -72,7 +76,12 @@ export class PlayerService {
   }
 
   restoreConnectionAndSendError(): void {
-    this.modalService.enableModal.next('connection-lost');
+    this.reconnectAttempts++;
+
+    if (this.reconnectAttempts > 1) {
+      this.modalService.enableModal.next('connection-lost');
+    }
+
     setTimeout(() => this.connect(), 2000);
   }
 
